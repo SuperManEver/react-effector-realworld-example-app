@@ -1,8 +1,14 @@
-import React from "react";
-import { RouteComponentProps } from "@reach/router";
+import React from 'react'
+import { RouteComponentProps } from '@reach/router'
 
-type Props = RouteComponentProps;
+import { WithHeader } from 'layout/WithHeader'
+
+type Props = RouteComponentProps
 
 export function Signup<Props>(props: Props) {
-  return <div>Signup</div>;
+  return (
+    <WithHeader>
+      <div>Signup</div>
+    </WithHeader>
+  )
 }

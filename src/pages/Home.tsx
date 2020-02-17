@@ -1,9 +1,15 @@
-import React from "react";
+import React from 'react'
+
+import { WithHeader } from 'layout/WithHeader'
 
 type IProps = {
-  path: string;
-};
+  path: string
+}
 
 export function Home<Props>(props: Props) {
-  return <div>Home Page</div>;
+  return (
+    <WithHeader>
+      <div>Home Page</div>
+    </WithHeader>
+  )
 }
