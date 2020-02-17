@@ -1,6 +1,6 @@
 import React from "react";
 
-type Props = {
+type IProps = {
   path: string;
 };
 
