@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from '@reach/router'
+import { useStore } from 'effector-react'
+import { StoreState, store, User } from 'services/currentUser'
 
 const LoggedOutView = () => {
   return (
@@ -25,60 +27,69 @@ const LoggedOutView = () => {
   )
 }
 
-// const LoggedInView = props => {
-//   if (props.currentUser) {
-//     return (
-//       <ul className="nav navbar-nav pull-xs-right">
-//         <li className="nav-item">
-//           <Link to="/" className="nav-link">
-//             Home
-//           </Link>
-//         </li>
+type LoggedProps = {
+  currentUser: User
+}
 
-//         <li className="nav-item">
-//           <Link to="/editor" className="nav-link">
-//             <i className="ion-compose"></i>&nbsp;New Post
-//           </Link>
-//         </li>
+const LoggedInView = (props: LoggedProps) => {
+  if (props.currentUser) {
+    const { currentUser } = props
 
-//         <li className="nav-item">
-//           <Link to="/settings" className="nav-link">
-//             <i className="ion-gear-a"></i>&nbsp;Settings
-//           </Link>
-//         </li>
-
-//         <li className="nav-item">
-//           <Link to={`/@${props.currentUser.username}`} className="nav-link">
-//             <img
-//               src={props.currentUser.image}
-//               className="user-pic"
-//               alt={props.currentUser.username}
-//             />
-//             {props.currentUser.username}
-//           </Link>
-//         </li>
-//       </ul>
-//     )
-//   }
-
-//   return null
-// }
-
-export class Header extends React.Component {
-  render() {
     return (
-      <nav className="navbar navbar-light">
-        <div className="container">
-          <Link to="/" className="navbar-brand">
-            conduit
+      <ul className="nav navbar-nav pull-xs-right">
+        <li className="nav-item">
+          <Link to="/" className="nav-link">
+            Home
           </Link>
+        </li>
 
-          <LoggedOutView />
-          {/* <LoggedOutView currentUser={this.props.currentUser} />
+        <li className="nav-item">
+          <Link to="/editor" className="nav-link">
+            <i className="ion-compose"></i>&nbsp;New Post
+          </Link>
+        </li>
 
-          <LoggedInView currentUser={this.props.currentUser} /> */}
-        </div>
-      </nav>
+        <li className="nav-item">
+          <Link to="/settings" className="nav-link">
+            <i className="ion-gear-a"></i>&nbsp;Settings
+          </Link>
+        </li>
+
+        <li className="nav-item">
+          <Link to={`/@${props.currentUser.username}`} className="nav-link">
+            {currentUser.image && (
+              <img
+                src={props.currentUser.image}
+                className="user-pic"
+                alt={props.currentUser.username}
+              />
+            )}
+            {props.currentUser.username}
+          </Link>
+        </li>
+      </ul>
     )
   }
+
+  return null
+}
+
+export function Header() {
+  const { currentUser } = useStore<StoreState>(store)
+
+  return (
+    <nav className="navbar navbar-light">
+      <div className="container">
+        <Link to="/" className="navbar-brand">
+          conduit
+        </Link>
+
+        {currentUser ? (
+          <LoggedInView currentUser={currentUser} />
+        ) : (
+          <LoggedOutView />
+        )}
+      </div>
+    </nav>
+  )
 }

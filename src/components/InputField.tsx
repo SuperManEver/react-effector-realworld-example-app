@@ -19,8 +19,6 @@ export const InputField = ({ label, name, type }: InputProps) => {
 
   const [field, meta] = useField(props)
 
-  console.log(field, meta)
-
   return (
     <>
       <input className="form-control form-control-lg" {...field} {...props} />
