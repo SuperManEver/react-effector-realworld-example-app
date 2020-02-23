@@ -4,9 +4,9 @@ import styled from '@emotion/styled'
 
 type InputProps = {
   name: string
-  type: 'email' | 'password'
+  type: 'email' | 'password' | 'text'
   label?: string
-  placeholder: string
+  placeholder?: string
 }
 
 const ErrorMsg = styled.div`

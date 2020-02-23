@@ -6,7 +6,8 @@ import { Auth } from 'services/api'
 import { AuthErrors } from 'typings'
 import CurrentUser from 'services/currentUser'
 
-type LoginPayload = {
+type RegisterPayload = {
+  username: string
   email: string
   password: string
 }
@@ -17,24 +18,25 @@ interface ErrorSetable {
   setErrors(errors: AuthErrors): void
 }
 
-export class LoginOperation {
+export class RegisterOperation {
   ref: ComponentRef
-  payload: LoginPayload
+  payload: RegisterPayload
 
-  constructor(ref: ComponentRef, payload: LoginPayload) {
+  constructor(ref: ComponentRef, payload: RegisterPayload) {
     this.ref = ref
     this.payload = payload
   }
 
-  static run(ref: ComponentRef, payload: LoginPayload) {
-    return new LoginOperation(ref, payload).run()
+  static run(ref: ComponentRef, payload: RegisterPayload) {
+    return new RegisterOperation(ref, payload).run()
   }
 
   async run() {
-    const { email, password } = this.payload
+    const { username, email, password } = this.payload
 
     try {
-      const res = await Auth.login(email, password)
+      const res = await Auth.register(username, email, password)
+
       CurrentUser.events.setUser(res.user)
 
       navigate('/')
@@ -42,6 +44,8 @@ export class LoginOperation {
       // TODO: save token to common store
     } catch (err) {
       const { response } = err
+
+      console.log(response)
 
       const errors: AuthErrors | undefined = path(['body', 'errors'], response)
 

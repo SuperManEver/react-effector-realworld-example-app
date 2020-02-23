@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import { LoginErrors } from 'typings'
+import { AuthErrors } from 'typings'
 
-export function ListErrors(props: { errors: LoginErrors }) {
+export function ListErrors(props: { errors: AuthErrors }) {
   const { errors } = props
 
   if (errors) {

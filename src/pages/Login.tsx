@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { bind } from 'decko'
 import { RouteComponentProps, Link } from '@reach/router'
 
-import { LoginErrors } from 'typings'
+import { AuthErrors } from 'typings'
 import { WithHeader } from 'layout/WithHeader'
 import { InputField } from 'components/InputField'
 import { ListErrors } from 'components/ListErrors'
@@ -12,7 +12,7 @@ import { LoginOperation } from 'operations/LoginOperation'
 
 type Props = RouteComponentProps
 type State = {
-  errors: LoginErrors
+  errors: AuthErrors
 }
 
 type AuthPayload = { email: string; password: string }
@@ -23,7 +23,7 @@ export class Login extends React.Component<Props, State> {
   }
 
   @bind
-  setErrors(errors: LoginErrors): void {
+  setErrors(errors: AuthErrors): void {
     this.setState({
       errors,
     })
