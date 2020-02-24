@@ -4,7 +4,8 @@ import { navigate } from '@reach/router'
 
 import { Auth } from 'services/api'
 import { AuthErrors, LoadableComponent } from 'typings'
-import CurrentUser from 'services/currentUser'
+import CurrentUser, { User } from 'services/currentUser'
+import Common from 'services/common'
 
 type LoginPayload = {
   email: string
@@ -40,9 +41,9 @@ export class LoginOperation {
 
       CurrentUser.events.setUser(res.user)
 
-      navigate('/')
+      this.setToken(res)
 
-      // TODO: save token to common store
+      navigate('/')
     } catch (err) {
       const { response } = err
 
@@ -53,6 +54,14 @@ export class LoginOperation {
       }
     } finally {
       this.disableLoading()
+    }
+  }
+
+  setToken(response: { user: User }) {
+    const token: string | undefined = path(['user', 'token'], response)
+
+    if (token) {
+      Common.events.setToken(token)
     }
   }
 

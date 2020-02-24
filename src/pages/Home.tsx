@@ -2,6 +2,7 @@ import React from 'react'
 import { createEvent, createStore, createEffect } from 'effector'
 import { useStore } from 'effector-react'
 import { Auth } from 'services/api'
+import * as Common from 'services/common'
 
 import { WithHeader } from 'layout/WithHeader'
 
@@ -31,23 +32,9 @@ type IProps = {
   path: string
 }
 
-export function Home<Props>(props: Props) {
+export function Home(props: IProps) {
   const { currentUser } = useStore(userStore)
-
-  async function login() {
-    const user = {
-      email: 'tes22t@test12.ru',
-      password: '123123123',
-    }
-
-    const res = await Auth.login(user.email, user.password)
-
-    updateUser(res.user)
-  }
-
-  function handleRun() {
-    login()
-  }
+  const { token } = useStore(Common.store)
 
   return (
     <WithHeader>
@@ -55,7 +42,11 @@ export function Home<Props>(props: Props) {
         <div>Result</div>
         <p>{JSON.stringify(currentUser, null, 4)}</p>
 
-        <button onClick={handleRun}>Load</button>
+        <div>
+          <p>Token: {token}</p>
+        </div>
+
+        {/* <button onClick={handleRun}>Load</button> */}
       </div>
     </WithHeader>
   )
