@@ -73,8 +73,6 @@ export class LoginOperation {
     this.ref.disableLoading()
   }
 
-  disableLogin() {}
-
   setErrors(errors: AuthErrors) {
     this.ref.setErrors(errors)
   }
