@@ -3,7 +3,7 @@ import { path } from 'ramda'
 import { navigate } from '@reach/router'
 
 import { Auth } from 'services/api'
-import { AuthErrors } from 'typings'
+import { AuthErrors, LoadableComponent } from 'typings'
 import CurrentUser from 'services/currentUser'
 
 type LoginPayload = {
@@ -11,7 +11,7 @@ type LoginPayload = {
   password: string
 }
 
-type ComponentRef = React.Component<any, any> & ErrorSetable
+type ComponentRef = React.Component<any, any> & ErrorSetable & LoadableComponent
 
 interface ErrorSetable {
   setErrors(errors: AuthErrors): void
@@ -33,8 +33,11 @@ export class LoginOperation {
   async run() {
     const { email, password } = this.payload
 
+    this.enableLogin()
+
     try {
       const res = await Auth.login(email, password)
+
       CurrentUser.events.setUser(res.user)
 
       navigate('/')
@@ -48,8 +51,20 @@ export class LoginOperation {
       if (errors) {
         this.setErrors(errors)
       }
+    } finally {
+      this.disableLoading()
     }
   }
+
+  enableLogin() {
+    this.ref.enableLoading()
+  }
+
+  disableLoading() {
+    this.ref.disableLoading()
+  }
+
+  disableLogin() {}
 
   setErrors(errors: AuthErrors) {
     this.ref.setErrors(errors)

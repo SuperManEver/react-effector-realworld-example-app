@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { bind } from 'decko'
 import { RouteComponentProps, Link } from '@reach/router'
 
-import { AuthErrors } from 'typings'
+import { AuthErrors, WithAuthErrors, LoadableComponent } from 'typings'
 import { WithHeader } from 'layout/WithHeader'
 import { InputField } from 'components/InputField'
 import { ListErrors } from 'components/ListErrors'
@@ -12,13 +12,16 @@ import { LoginOperation } from 'operations/LoginOperation'
 
 type Props = RouteComponentProps
 type State = {
+  inProgress: boolean
   errors: AuthErrors
 }
 
 type AuthPayload = { email: string; password: string }
 
-export class Login extends React.Component<Props, State> {
+export class Login extends React.Component<Props, State>
+  implements WithAuthErrors<AuthErrors>, LoadableComponent {
   state = {
+    inProgress: false,
     errors: {},
   }
 
@@ -42,8 +45,22 @@ export class Login extends React.Component<Props, State> {
     })
   }
 
+  @bind
+  enableLoading(): void {
+    this.setState({
+      inProgress: true,
+    })
+  }
+
+  @bind
+  disableLoading(): void {
+    this.setState({
+      inProgress: false,
+    })
+  }
+
   render() {
-    const { errors } = this.state
+    const { errors, inProgress } = this.state
 
     return (
       <WithHeader>
@@ -94,6 +111,7 @@ export class Login extends React.Component<Props, State> {
                       <button
                         className="btn btn-lg btn-primary pull-xs-right"
                         type="submit"
+                        disabled={inProgress}
                       >
                         Sign in
                       </button>
