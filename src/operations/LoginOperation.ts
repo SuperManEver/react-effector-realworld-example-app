@@ -32,12 +32,10 @@ export class LoginOperation {
   }
 
   async run() {
-    const { email, password } = this.payload
-
     this.enableLogin()
 
     try {
-      const res = await Auth.login(email, password)
+      const res = await this.interaction()
 
       CurrentUser.events.setUser(res.user)
 
@@ -55,6 +53,12 @@ export class LoginOperation {
     } finally {
       this.disableLoading()
     }
+  }
+
+  interaction(): Promise<{ user: User }> {
+    const { email, password } = this.payload
+
+    return Auth.login(email, password)
   }
 
   setToken(response: { user: User }) {

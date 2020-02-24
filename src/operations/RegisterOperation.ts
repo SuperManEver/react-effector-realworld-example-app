@@ -33,12 +33,10 @@ export class RegisterOperation {
   }
 
   async run() {
-    const { username, email, password } = this.payload
-
     this.enableLogin()
 
     try {
-      const res = await Auth.register(username, email, password)
+      const res = await this.interaction()
 
       CurrentUser.events.setUser(res.user)
 
@@ -64,6 +62,12 @@ export class RegisterOperation {
     if (token) {
       Common.events.setToken(token)
     }
+  }
+
+  interaction(): Promise<{ user: User }> {
+    const { username, email, password } = this.payload
+
+    return Auth.register(username, email, password)
   }
 
   enableLogin() {

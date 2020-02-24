@@ -1,6 +1,6 @@
 import superagentPromise from 'superagent-promise'
 import _superagent from 'superagent'
-import * as CurrentUser from 'services/currentUser'
+import { User } from 'services/currentUser'
 
 const API_ROOT = 'https://conduit.productionready.io/api'
 
@@ -42,9 +42,13 @@ const requests = {
 
 export const Auth = {
   current: () => requests.get('/user'),
-  login: (email: string, password: string): { user: CurrentUser.User } =>
+  login: (email: string, password: string): Promise<{ user: User }> =>
     requests.post('/users/login', { user: { email, password } }),
-  register: (username: string, email: string, password: string) =>
+  register: (
+    username: string,
+    email: string,
+    password: string
+  ): Promise<{ user: User }> =>
     requests.post('/users', { user: { username, email, password } }),
   save: (user: any) => requests.put('/user', { user }),
 }
