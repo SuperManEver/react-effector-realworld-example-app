@@ -56,7 +56,7 @@ const LoggedInView = (props: LoggedProps) => {
         </li>
 
         <li className="nav-item">
-          <Link to={`/@${props.currentUser.username}`} className="nav-link">
+          <Link to="/profile" className="nav-link">
             {currentUser.image && (
               <img
                 src={props.currentUser.image}

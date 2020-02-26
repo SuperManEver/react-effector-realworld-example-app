@@ -1,3 +1,3 @@
-export interface StoreState {
+export type StoreState = {
   token: string | undefined
 }

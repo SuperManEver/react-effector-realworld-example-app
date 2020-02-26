@@ -1,6 +1,8 @@
 import superagentPromise from 'superagent-promise'
 import _superagent from 'superagent'
+import { isNil } from 'ramda'
 import { User } from 'services/currentUser'
+import * as Common from 'services/common'
 
 const API_ROOT = 'https://conduit.productionready.io/api'
 
@@ -9,7 +11,15 @@ const encode = encodeURIComponent
 const superagent = superagentPromise(_superagent, global.Promise)
 const responseBody = (res: Response) => res.body
 
-let token: string | null = null
+let token: string | undefined
+
+Common.store.watch(state => {
+  const { token: _token } = state
+
+  if (!isNil(_token)) {
+    token = _token
+  }
+})
 
 const tokenPlugin = (req: any) => {
   if (token) {
