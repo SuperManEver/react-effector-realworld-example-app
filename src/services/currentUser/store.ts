@@ -6,6 +6,7 @@ import { StoreState } from './types'
 import { setUser } from './events'
 
 import { Auth } from 'services/api'
+import { showError } from 'services/notifications'
 import { store as CommonStore } from 'services/common'
 
 const initialState = {
@@ -20,10 +21,8 @@ const fetchUser = createEffect({
   },
 })
 
-// TODO: handle fail case
-fetchUser.fail.watch(({ params, error }) => {
-  console.error(params) // {name: 'zerobias'}
-  console.error(error) // rejected value
+fetchUser.fail.watch(() => {
+  showError('Fetch user data failed')
 })
 
 fetchUser.done.watch(({ params, result }) => setUser(result))
