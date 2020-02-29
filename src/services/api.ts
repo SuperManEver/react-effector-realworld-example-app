@@ -51,7 +51,7 @@ const requests = {
 }
 
 export const Auth = {
-  current: () => requests.get('/user'),
+  current: (): Promise<{ user: User }> => requests.get('/user'),
   login: (email: string, password: string): Promise<{ user: User }> =>
     requests.post('/users/login', { user: { email, password } }),
   register: (
