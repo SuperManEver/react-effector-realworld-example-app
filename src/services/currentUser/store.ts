@@ -44,3 +44,9 @@ CommonStore.watch(async state => {
     await fetchUser()
   }
 })
+
+export const isLoggedIn = store.map(state => {
+  const { currentUser } = state
+
+  return !isNil(currentUser)
+})
